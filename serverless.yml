@@ -1,0 +1,28 @@
+service: delivery-app-eventbridge-demo
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - events:DescribeEventBus
+        - events:PutEvents
+      Resource: arn:aws:events:ap-southeast-1:*:*
+
+functions:
+  customerSupport:
+    handler: handler.customerSupport
+    events:
+     - http:
+        path: delivery-app-eventbridge-demo
+        method: post
+        cors: true
+  qualitySupportService:
+    handler: QualitySupportService.handler
+  logisticsSupportService:
+    handler: LogisticsSupportService.handler
+  techSupportService:
+    handler: TechSupportService.handler
